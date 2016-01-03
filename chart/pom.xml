@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.zcj.app.chart</groupId>
+    <artifactId>chart</artifactId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>AppFuse Spring MVC Application</name>
+
+    <parent>
+        <groupId>org.appfuse</groupId>
+        <artifactId>appfuse-web</artifactId>
+        <version>3.5.0</version>
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>appfuse-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/appfuse-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>de.juplo</groupId>
+                <artifactId>hibernate4-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>dbunit-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.appfuse</groupId>
+            <artifactId>appfuse-${web.framework}</artifactId>
+            <version>${appfuse.version}</version>
+            <type>pom</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.appfuse</groupId>
+                    <artifactId>appfuse-hibernate</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <amp.genericCore>true</amp.genericCore>
+        <amp.fullSource>false</amp.fullSource>
+        <dao.framework>hibernate</dao.framework>
+        <db.name>chart</db.name>
+        <web.framework>spring</web.framework>
+
+        <!-- Framework/Plugin versions -->
+        <appfuse.version>3.5.0</appfuse.version>
+        <java.version>1.7</java.version>
+        
+     <!-- test報錯   -->
+     <skipTests>false</skipTests>
+     <!-- 如果是oracle数据库，必须增加schema，否则提示找不到表或视图。 -->
+     <dbunit.schema>scott</dbunit.schema>     
+    
+        <!-- oracle配置 -->
+<jdbc.groupId>com.oracle</jdbc.groupId>
+<jdbc.artifactId>ojdbc6</jdbc.artifactId>
+<jdbc.version>11.2.0</jdbc.version>
+<jdbc.driverClassName>oracle.jdbc.OracleDriver</jdbc.driverClassName>
+<jdbc.url><![CDATA[jdbc:oracle:thin:@192.168.1.114:1521:Orcl]]></jdbc.url>
+<jdbc.username>scott</jdbc.username>
+<jdbc.password>tiger</jdbc.password>
+<jdbc.validationQuery><![CDATA[SELECT 1 + 1 from DUAL]]></jdbc.validationQuery>
+<!-- 去除分隔符 -->
+<hibernate.export.schema.delimiter></hibernate.export.schema.delimiter>    
+
+
+        <!-- mysql配置
+ <jdbc.groupId>com.oracle</jdbc.groupId>
+<jdbc.artifactId>ojdbc6</jdbc.artifactId>
+<jdbc.version>11.2.0</jdbc.version>
+<jdbc.driverClassName>oracle.jdbc.OracleDriver</jdbc.driverClassName>
+<jdbc.url><![CDATA[jdbc:oracle:thin:@192.168.1.114:1521:Orcl]]></jdbc.url>
+<jdbc.username>scott</jdbc.username>
+<jdbc.password>tiger</jdbc.password>
+<jdbc.validationQuery><![CDATA[SELECT 1 + 1 from DUAL]]></jdbc.validationQuery> -->
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>itest</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>webtest-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>webtest-maven-plugin</artifactId>
+            </plugin>
+            
+            <!--auto deploy war to weblogic by maven-->
+   
+  <!--  <plugin> 
+		  <groupId>com.oracle.weblogic</groupId>
+		  <artifactId>weblogic-maven-plugin</artifactId>
+		  <version>10.3.6.0</version>
+      <configuration> 
+          <adminurl>t3://localhost:7001</adminurl>
+          <user>weblogic</user> 
+          <password>weblogic123</password> 
+          <upload>true</upload> 
+          <action>deploy</action> 
+          <remote>false</remote> 
+          <verbose>true</verbose> 
+		<source>chart.war</source> 
+         <name>chart</name> 
+         <source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+					<name>${project.build.finalName}</name>
+      </configuration> 
+      <executions> 
+         <execution> 
+            <phase>install</phase> 
+              <goals> 
+                <goal>deploy</goal> 
+              </goals> 
+         </execution> 
+       </executions> 
+        
+      </plugin>  -->
+   <!-- end-->
+            
+        </plugins>
+    </reporting>
+</project>
